@@ -1,0 +1,65 @@
+Given a string s, find the length of the longest substring without repeating characters.
+
+ 
+
+Example 1:
+
+Input: s = "abcabcbb"
+Output: 3
+Explanation: The answer is "abc", with the length of 3.
+Example 2:
+
+Input: s = "bbbbb"
+Output: 1
+Explanation: The answer is "b", with the length of 1.
+Example 3:
+
+Input: s = "pwwkew"
+Output: 3
+Explanation: The answer is "wke", with the length of 3.
+Notice that the answer must be a substring, "pwke" is a subsequence and not a substring.
+ 
+
+Constraints:
+
+0 <= s.length <= 5 * 104
+s consists of English letters, digits, symbols and spaces.
+
+-----------------------------------
+
+Solution 1 - 
+TC - O(2n)
+SC - O(min(m, n))
+ We need O(k)O(k) space for checking a substring has no duplicate characters, where kk is the size of the Set. The size of the Set is upper bounded by the size of the string nn and the size of the charset/alphabet mm.
+
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        if(s == null || s.length() == 0)
+            return 0;
+        
+        Set<Character> set = new HashSet<>();
+        
+        int i = 0, j = 0, result = 0;
+        
+        while(j < s.length())
+        {
+            if(!set.contains(s.charAt(j)))
+            {
+               set.add(s.charAt(j));  
+            }
+            else
+            {
+                while(s.charAt(i) != s.charAt(j))
+                {
+                    set.remove(s.charAt(i));
+                    i++;
+                }
+                i++;
+            }
+            result = Math.max(result, set.size());
+            j++;
+        }
+        result = Math.max(result, set.size());
+        return result;
+    }
+}
