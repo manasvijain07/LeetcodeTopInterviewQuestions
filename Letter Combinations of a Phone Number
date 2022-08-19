@@ -1,0 +1,79 @@
+Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent. Return the answer in any order.
+
+A mapping of digits to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.
+
+
+ 
+
+Example 1:
+
+Input: digits = "23"
+Output: ["ad","ae","af","bd","be","bf","cd","ce","cf"]
+Example 2:
+
+Input: digits = ""
+Output: []
+Example 3:
+
+Input: digits = "2"
+Output: ["a","b","c"]
+ 
+
+Constraints:
+
+0 <= digits.length <= 4
+digits[i] is a digit in the range ['2', '9'].
+
+
+----------------------------------
+
+Solution 1 - for based Backtracking
+TC - O(4^N * N), where N is the length of digits. Note that 44 in this expression is referring to the maximum value length in the hash map, and not to the length of the input.
+SC - O(N) - for generating path (hashmap wil be O(1))
+
+class Solution {
+    List<String> result;
+    HashMap<Integer, List<Character>> map;
+    
+    public List<String> letterCombinations(String digits) {
+        result = new ArrayList<>();
+        
+        if(digits == null || digits.length() == 0)
+            return result;
+        
+        map = new HashMap<>();
+        map.put(1, new ArrayList());
+        map.put(2, new ArrayList<>(Arrays.asList('a', 'b', 'c')));
+        map.put(3, new ArrayList<>(Arrays.asList('d', 'e', 'f')));
+        map.put(4, new ArrayList<>(Arrays.asList('g', 'h', 'i')));
+        map.put(5, new ArrayList<>(Arrays.asList('j', 'k', 'l')));
+        map.put(6, new ArrayList<>(Arrays.asList('m', 'n', 'o')));
+        map.put(7, new ArrayList<>(Arrays.asList('p', 'q', 'r', 's')));
+        map.put(8, new ArrayList<>(Arrays.asList('t', 'u', 'v')));
+        map.put(9, new ArrayList<>(Arrays.asList('w', 'x', 'y', 'z')));
+        
+        helper(digits, 0, new StringBuffer());
+        return result;
+    }
+    
+    public void helper(String digits, int index, StringBuffer path)
+    {
+        // base case
+        if(index >= digits.length())
+        {
+            result.add(path.toString());
+            return;
+        }
+        
+        int val = digits.charAt(index) - '0';
+        List<Character> mapResult = map.get(val);
+        
+        for(int i = 0; i < mapResult.size(); i++)
+        {
+            path.append(mapResult.get(i));
+            helper(digits, index + 1, path);
+            path.deleteCharAt(path.length() - 1);
+        }
+        
+    }
+}
